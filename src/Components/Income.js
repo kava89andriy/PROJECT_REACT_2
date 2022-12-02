@@ -1,4 +1,6 @@
 import { useState } from "react";
+import BudgetItem from "./BudgetItem";
+import expanses from "./Expanses";
 const Income = (props) => {
   const [incomes, setIncomes] = useState([]);
   const [incomeTitle, setIncomeTitle] = useState("");
@@ -9,10 +11,31 @@ const Income = (props) => {
     let data = {
       title: incomeTitle,
       value: incomeValue,
+      id: (Math.random() * 100000).toFixed(0),
     };
-    setIncomes([...incomes, data]);
-
+    let currentIncomes = incomes;
+    currentIncomes.push(data);
+    setIncomes(currentIncomes);
+    props.handleTotal(incomes);
     console.log(incomes);
+  };
+
+  const editItem = (id, data) => {
+    let currentItems = incomes;
+    let index = currentItems.findIndex((item) => item.id === id);
+    currentItems[index].title = data[0];
+    currentItems[index].value = data[1];
+
+    setIncomes(currentItems);
+    
+    console.log(incomes);
+  };
+
+  const deleteItem = (id) => {
+    let currentItems = incomes;
+    let indexToRemove = currentItems.findIndex((item) => item.id === id);
+    currentItems.slice(indexToRemove, 1);
+    setIncomes(currentItems);
   };
 
   return (
@@ -42,9 +65,22 @@ const Income = (props) => {
           className="budget__list__form__input__button"
         />
       </form>
-      <ul id="incomesList" className="budget__list"></ul>
+      <ul className="budget__list">
+        {incomes.map((income, index) => {
+          return (
+            <BudgetItem
+              title={income.title}
+              value={income.value}
+              id={income.id}
+              editItem={editItem}
+              deleteItem={deleteItem}
+              key={income.id}
+            />
+          );
+        })}
+      </ul>
       <p className="budget__list__summary">
-        Incomes sum: <span id="incomesValue">0</span> PLN
+        Incomes sum: <span id="incomesValue">{props.incomeTotal}</span> PLN
       </p>
     </div>
   );

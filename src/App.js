@@ -11,15 +11,16 @@ function App() {
   const [incomeTotal, setIncomeTotal] = useState(0);
   const [expansesTotal, setExpansesTotal] = useState(0);
 
+  const handleTotal = () => {
 
-  
+  }
 
   return (
     <main className="container">
       <Header budgetValue={budgetTotal}/>
       <section className="flex flex--space-between budget__list__wrapper">
-        <Income />
-        <Expenses />
+        <Income setIncomes={setIncomeTotal} handleTotal={handleTotal} incomeTotal={incomeTotal} />
+        <Expenses setExpanses={setExpansesTotal} handleTotal={handleTotal} expansesTotal={expansesTotal} />
       </section>
     </main>
   );
