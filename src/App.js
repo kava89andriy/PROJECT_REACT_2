@@ -19,7 +19,7 @@ function App() {
     <main className="container">
       <Header budgetValue={budgetTotal}/>
       <section className="flex flex--space-between budget__list__wrapper">
-        <Income setIncomes={setIncomeTotal} handleTotal={handleTotal} incomeTotal={incomeTotal} />
+        <Income setIncomes={setIncomeTotal} handleTotal={handleTotal} incomeTotal={incomeTotal} setIncomeTotal={setIncomeTotal} />
         <Expenses setExpanses={setExpansesTotal} handleTotal={handleTotal} expansesTotal={expansesTotal} />
       </section>
     </main>

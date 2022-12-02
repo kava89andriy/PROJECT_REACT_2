@@ -6,8 +6,16 @@ const Income = (props) => {
   const [incomeTitle, setIncomeTitle] = useState("");
   const [incomeValue, setIncomeValue] = useState(0);
 
-  const addIncome = (e) => {
-    e.preventDefault();
+  const calculateIncome = () => {
+    let counter = 0;
+    incomes.forEach((item) => {
+      counter += parseInt(item.value);
+    });
+
+    return counter;
+  };
+
+  const addIncome = () => {
     let data = {
       title: incomeTitle,
       value: incomeValue,
@@ -17,7 +25,8 @@ const Income = (props) => {
     currentIncomes.push(data);
     setIncomes(currentIncomes);
     props.handleTotal(incomes);
-    console.log(incomes);
+
+    props.setIncomeTotal(calculateIncome);
   };
 
   const editItem = (id, data) => {
@@ -25,27 +34,25 @@ const Income = (props) => {
     let index = currentItems.findIndex((item) => item.id === id);
     currentItems[index].title = data[0];
     currentItems[index].value = data[1];
-
     setIncomes(currentItems);
-    
-    console.log(incomes);
+    props.setIncomeTotal(calculateIncome);
   };
 
   const deleteItem = (id) => {
     let currentItems = incomes;
     let indexToRemove = currentItems.findIndex((item) => item.id === id);
-    currentItems.slice(indexToRemove, 1);
+    console.log(indexToRemove);
+    currentItems.splice(indexToRemove, 1);
+    console.log(currentItems);
     setIncomes(currentItems);
+
+    props.setIncomeTotal(calculateIncome);
   };
 
   return (
     <div className="budget__incomes">
       <h2 className="budget__list__header incomes__header">Incomes</h2>
-      <form
-        id="incomeForm"
-        className="budget__list__form"
-        onSubmit={(e) => addIncome(e)}
-      >
+      <form id="incomeForm" className="budget__list__form">
         <input
           type="text"
           id="incomeTitle"
@@ -59,11 +66,13 @@ const Income = (props) => {
           className="budget__list__form__input budget__list__form__input--number"
           onChange={(e) => setIncomeValue(parseInt(e.target.value))}
         />
-        <input
-          type="submit"
-          value="Add"
+        <button
+          onClick={() => addIncome()}
+          type="button"
           className="budget__list__form__input__button"
-        />
+        >
+          add{" "}
+        </button>
       </form>
       <ul className="budget__list">
         {incomes.map((income, index) => {
